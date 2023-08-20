@@ -1,4 +1,5 @@
 let gridBoard = document.querySelector('.gridBoard');
+gridBoard.style.backgroundColor = 'white';
 
 function populateGridBoard(size) {
     
@@ -7,6 +8,8 @@ function populateGridBoard(size) {
     gridBoard.style.backgroundColor = 'white';
 
     let totalGridSquares = size * size;
+
+    reset();
 
     for (let i=0; i<totalGridSquares; i++) {
         let gridSquare = document.createElement('div');
@@ -26,16 +29,19 @@ let colourChange;
 let colourBtns = document.querySelectorAll('.colourBtn');
 colourBtns.forEach((colourBtn) => {
     colourBtn.addEventListener('click', () => {
-        colourChange = colourBtn.textContent
+        if (colourBtn.textContent !== 'random') {
+            colourChange = colourBtn.textContent    
+            return;
+        }
+        if (colourBtn.textContent === 'random') {
+            const randomColorPen = () => {
+                const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+                return `#${randomColor}`
+            } 
+            colourChange = randomColorPen();
+        }
     })
 })
-
-
-
-// populateGridBoard(2);
-let input = document.querySelector('input')
-let gridSize = input.value;
-populateGridBoard(gridSize);
 
 //allows to reset board
 let resetBtn = document.querySelector('.reset')
@@ -46,5 +52,21 @@ function reset() {
 }
 resetBtn.addEventListener('click', reset)
 
-// let selectGridSquares = gridBoard.querySelector('div');
-// selectGridSquares.forEach((div) => div.remove());
+
+
+//allows to change board size
+let gridSize;
+
+const submitBtn = document.querySelector('.submit');
+let input = document.querySelector('input')
+
+submitBtn.addEventListener('click', () => {
+    gridSize = input.value;
+    console.log(gridSize)
+    populateGridBoard(gridSize);
+})
+
+
+// let gridSize = submitBtn.addEventListener('click', inputSize);
+// populateGridBoard(gridSize);
+
